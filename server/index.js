@@ -13,8 +13,18 @@ app.use(cors({
 const db = mysql.createConnection({
     user: 'root',
     host: 'localhost',
-    password: 'adminroot',
-    database: 'mydb',
+    password: 'Kobe7247',
+    database: 'vitadb',
+});
+//Funcion que retorna todas las ordenes
+app.get('/', (req, res) => {
+    db.query(`SELECT * FROM vitadb.order;`, (err, result) => {
+        if (err) {
+            res.send(err);
+        } else {
+            res.send(result);
+        }
+    });
 });
 
 app.post('/purchase', (req, res) => {
@@ -23,11 +33,13 @@ app.post('/purchase', (req, res) => {
     const address = req.body.address;
     const phoneNumber = req.body.phoneNumber;
     const email = req.body.email;
-
-    db.query(`INSERT INTO user (name, lastName, address, phoneNumber, email) VALUES (?,?,?,?,?)`,
-        [name, lastName, address, phoneNumber, email], (err, result) => {
+    const units = req.body.units;
+  //  const units = 1;  //Test
+    db.query("call vitadb.createOrder('"+name+"','"+lastName+"','"+address+"','"+phoneNumber+"','"+email+"','"+units+"');"
+    , (err, result) => {
             if (err) {
-                res.send({ receive: false });
+                //res.send({ receive: false });
+                res.send(err);
             } else {
                 res.send({ receive: true });
             }
@@ -35,6 +47,7 @@ app.post('/purchase', (req, res) => {
     );
 });
 
+//Call a stored procedure with parameters
 
 app.post('/track-order', (req, res) => {
     const id = req.body.id;

@@ -3,17 +3,41 @@ import axios from "axios";
 import { Form, Button, Card } from "react-bootstrap";
 
 
+    //Function that obtains the price of dollar
+    function getDollarPrice() {
+        axios.get("https://tipodecambio.paginasweb.cr/api")
+            .then((response) => {
+                console.log(response.data);
+                if (response.data) {
+                    console.log("Precio compra: " + response.data.compra);
+                    return response.data.compra;
+                } else {
+                    console.log("error");
+                }
+            });
+    }
+
+    getDollarPrice();
+
 function BuyerForm() {
 
     axios.defaults.withCredentials = true;
-
     const [name, setName] = useState("");
     const [lastName, setLastName] = useState("");
     const [address, setAddress] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [email, setEmail] = useState("");
+    const [units, setUnits] = useState(1);
 
+    //Function that rejects the input if it is not a integer number
+    function validateCorrectExtension(e) {
+        if (e % 1 === 0 && e <= 100) {
+            console.log('Unidades: ' + e);
+            setUnits(e);
+        }
+    }
 
+    //Al enviar el formulario
     const login = (e) => {
         e.preventDefault();
         axios.post("http://localhost:4000/purchase", {
@@ -22,6 +46,7 @@ function BuyerForm() {
             address: address,
             phoneNumber: phoneNumber,
             email: email,
+            units: units,
         }).then((response) => {
             console.log(response.data);
             if (response.data.receive) {
@@ -86,6 +111,13 @@ function BuyerForm() {
                                 onChange={(e) => {
                                     setEmail(e.currentTarget.value);
                                 }} />
+                        </Form.Group>
+
+                        <Form.Group className="mb-2" controlId="formBasicNumber">
+                            <Form.Label>Unidades a comprar</Form.Label>
+                            <Form.Control required value={units} type="number" min="1" max="100" placeholder="Ingrese su teléfono" onChange={(e) => {
+                                validateCorrectExtension(e.currentTarget.value);
+                            }} />
                         </Form.Group>
 
                         <Form.Text className="text-muted">
