@@ -23,6 +23,7 @@ const NavBar = () => {
                     <ul className="navbar-nav me-auto mb-2 mb-md-0">
                         <li className="nav-item">
                             <Link
+                                style={{ marginLeft: 25 }}
                                 to="/"
                                 className="nav-link active"
                                 aria-current="page"

@@ -1,6 +1,7 @@
 const express = require('express');
 const mysql = require('mysql');
 const cors = require('cors');
+const nodemailer = require('nodemailer');
 
 const app = express();
 app.use(express.json());
@@ -13,11 +14,18 @@ app.use(cors({
 const db = mysql.createConnection({
     user: 'root',
     host: 'localhost',
-    password: 'Kobe7247',
+    password: 'adminroot',
     database: 'vitadb',
 });
+
+const trackingNumber = (pr = "NE001", su = "CR") => {
+    for (let i = 0; i < 5; i++) pr += ~~(Math.random() * 10);
+    return pr + su;
+};
+
 //Funcion que retorna todas las ordenes
 app.get('/', (req, res) => {
+    emailSender();
     db.query(`SELECT * FROM vitadb.order;`, (err, result) => {
         if (err) {
             res.send(err);
@@ -34,14 +42,22 @@ app.post('/purchase', (req, res) => {
     const phoneNumber = req.body.phoneNumber;
     const email = req.body.email;
     const units = req.body.units;
-  //  const units = 1;  //Test
-    db.query("call vitadb.createOrder('"+name+"','"+lastName+"','"+address+"','"+phoneNumber+"','"+email+"','"+units+"');"
-    , (err, result) => {
+    const trackId = trackingNumber();
+    db.query("call vitadb.createOrder(?,?,?,?,?,?,?);"
+        , [trackId, name, lastName, address, phoneNumber, email, units], (err, result) => {
             if (err) {
-                //res.send({ receive: false });
                 res.send(err);
             } else {
-                res.send({ receive: true });
+                const queryResult = JSON.parse(JSON.stringify(result[0]));
+                if (queryResult[0].done === 'done') {
+                    res.send({ received: true, message: "El pedido fue realizado exitosamente." });
+                    emailSender(name, trackId, email);
+                }
+
+                if (queryResult[0].notEnough === 'notEnough') {
+                    res.send({ received: false, message: "No existe stock suficiente para satisfacer el pedido." });
+
+                }
             }
         }
     );
@@ -60,6 +76,32 @@ app.post('/track-order', (req, res) => {
     });
 });
 
+
+const emailSender = (name, trackID, emailAddress) => {
+
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'vitatech4@gmail.com',
+            pass: 'ucrvitatech4'
+        }
+    });
+
+    const mailOptions = {
+        from: 'vitatech4@gmail.com',
+        to: emailAddress,
+        subject: 'Codigo de Rastreo | Compra VitaTech',
+        text: 'Gracias por su compra ' + name + '.\n\nEl código de rastreo para su compra es: ' + trackID + '\n\nSaludos.'
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
+}
 
 
 

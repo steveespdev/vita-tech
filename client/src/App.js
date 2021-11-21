@@ -8,6 +8,8 @@ import './App.css';
 import BuyerForm from "./pages/buyerForm";
 import Tracker from "./pages/Tracker";
 import NavBar from "./components/navbar";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -22,6 +24,7 @@ function App() {
           <Route path="/tracking" element={<Tracker />}></Route>
         </Routes>
       </Router>
+      <ToastContainer />
     </div>
   );
 }

@@ -20,7 +20,7 @@ const Tracker = () => {
             <div align="center">
                 <Form onSubmit={onSubmit}>
                     <Form.Group className="mb-3" controlId="">
-                        <Form.Label style={{ fontSize: "20px" }}>Código del producto</Form.Label>
+                        <Form.Label style={{ fontSize: "22px", marginTop: 25 }}>Código del producto</Form.Label>
                         <Form.Control type="text" style={{ width: "300px" }} onChange={(e) => { changeProductID(e.target.value) }} placeholder="Digite el código del producto" />
                     </Form.Group>
                     <Button style={{ marginBottom: "20px" }} variant="primary" type="submit" disabled={!validateForm()}>

@@ -1,23 +1,23 @@
 import React, { useState } from 'react'
 import axios from "axios";
 import { Form, Button, Card } from "react-bootstrap";
+import { toast } from 'react-toastify';
 
+//Function that obtains the price of dollar
+function getDollarPrice() {
+    axios.get("https://tipodecambio.paginasweb.cr/api")
+        .then((response) => {
+            console.log(response.data);
+            if (response.data) {
+                console.log("Precio compra: " + response.data.compra);
+                return response.data.compra;
+            } else {
+                console.log("error");
+            }
+        });
+}
 
-    //Function that obtains the price of dollar
-    function getDollarPrice() {
-        axios.get("https://tipodecambio.paginasweb.cr/api")
-            .then((response) => {
-                console.log(response.data);
-                if (response.data) {
-                    console.log("Precio compra: " + response.data.compra);
-                    return response.data.compra;
-                } else {
-                    console.log("error");
-                }
-            });
-    }
-
-    getDollarPrice();
+// getDollarPrice();
 
 function BuyerForm() {
 
@@ -48,15 +48,21 @@ function BuyerForm() {
             email: email,
             units: units,
         }).then((response) => {
-            console.log(response.data);
-            if (response.data.receive) {
-                console.log("send notification");
+            // console.log(response.data);
+            if (response.data.received) {
+                toast.success(response.data.message, { position: "bottom-right" });
                 setName("");
                 setLastName("");
                 setAddress("");
                 setPhoneNumber("");
                 setEmail("");
             } else {
+                toast.info(response.data.message, { position: "bottom-right" });
+                setName("");
+                setLastName("");
+                setAddress("");
+                setPhoneNumber("");
+                setEmail("");
                 console.log("error");
             }
         });
@@ -66,7 +72,7 @@ function BuyerForm() {
         <div align="left">
             <Card
                 style={{
-                    width: "35%",
+                    width: "25%",
                     marginTop: "25px",
                     marginLeft: "40px",
                     position: "relative",
