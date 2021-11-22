@@ -1,20 +1,48 @@
 import React, { useState } from 'react';
+import axios from "axios";
+import { toast } from 'react-toastify';
+
 
 import { Button, Form, Table } from 'react-bootstrap';
 const Tracker = () => {
-    const isAValidProduct = false;
+    const [isAValidProduct, setIsaValidProduct] = useState(false);
     const [productID, changeProductID] = useState('');
+    const [orderData, setOrderData] = useState([]);
 
 
     const onSubmit = (e) => {
         e.preventDefault();
-        // props.onSubmit(productID);
-        // changeProductID('');
+        axios.post("http://localhost:4000/track-order", {
+            trackingNumber: productID,
+
+        }).then((response) => {
+            console.log(response);
+            if (response.data === false) {
+                setIsaValidProduct(false);
+                toast.error("El número de rastreo no se encuentra en la base de datos.", { position: 'bottom-right' });
+                console.log("no se encontro");
+            } else {
+                // console.log(response);
+                setIsaValidProduct(true);
+                setOrderData(response.data);
+            }
+        });
     }
 
     const validateForm = () => {
-        return productID.length > 4;
+        return productID.length > 2;
     }
+
+    const renderInfo = (orderData, index) => {
+        return (
+            <tr key={index}>
+                <td>{orderData.hour}</td>
+                <td>{orderData.description}</td>
+                <td>{orderData.currentPlace}</td>
+            </tr>
+        )
+    }
+
     return (
         <>
             <div align="center">
@@ -39,19 +67,12 @@ const Tracker = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>3:00 p.m</td>
-                                <td>Aceptado en la sucursal mi casa</td>
-                                <td>San José</td>
-                            </tr>
+                            {orderData.map(renderInfo)}
                         </tbody>
                     </Table>
                 </div>
                 :
                 <div align="center">
-                    <span>
-
-                    </span>
                 </div>
             }
         </>

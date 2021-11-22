@@ -66,12 +66,14 @@ app.post('/purchase', (req, res) => {
 //Call a stored procedure with parameters
 
 app.post('/track-order', (req, res) => {
-    const id = req.body.id;
-    db.query(`SELECT * FROM orders WHERE id = ?`, [id], (err, result) => {
+    const trackNumber = req.body.trackingNumber;
+    db.query(`SELECT hour, description, currentPlace FROM vitadb.tracking_order WHERE idOrder = ?`, [trackNumber], (err, result) => {
         if (err) {
             res.send(err);
-        } else {
+        } else if (result.length > 0) {
             res.send(result);
+        } else {
+            res.send(false);
         }
     });
 });
