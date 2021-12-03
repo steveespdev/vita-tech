@@ -69,73 +69,75 @@ function BuyerForm() {
     };
 
     return (
-        <div align="left">
-            <Card
-                style={{
-                    width: "25%",
-                    marginTop: "25px",
-                    marginLeft: "40px",
-                    position: "relative",
-                }}
-            >
-                <Card.Header style={{ fontSize: 20, marginBottom: 20 }}>
-                    Ingrese sus datos de compra
-                </Card.Header>
-                <Card.Body style={{ textAlign: "left" }}>
-                    <Form onSubmit={login}>
-                        <Form.Group className="mb-2" controlId="formBasicText">
-                            <Form.Label>Nombre</Form.Label>
-                            <Form.Control required value={name} type="text" placeholder="Ingrese su nombre" onChange={(e) => {
-                                setName(e.currentTarget.value);
-                            }} />
-                        </Form.Group>
-
-                        <Form.Group className="mb-2" controlId="formBasicText">
-                            <Form.Label>Apellidos</Form.Label>
-                            <Form.Control required value={lastName} type="text" placeholder="Ingrese sus apellidos" onChange={(e) => {
-                                setLastName(e.currentTarget.value);
-                            }} />
-                        </Form.Group>
-
-                        <Form.Group className="mb-2" controlId="formBasicText">
-                            <Form.Label>Dirección</Form.Label>
-                            <Form.Control required value={address} type="text" placeholder="Ingrese su dirección" onChange={(e) => {
-                                setAddress(e.currentTarget.value);
-                            }} />
-                        </Form.Group>
-
-                        <Form.Group className="mb-2" controlId="formBasicNumber">
-                            <Form.Label>Número de teléfono</Form.Label>
-                            <Form.Control required value={phoneNumber} type="number" placeholder="Ingrese su teléfono" onChange={(e) => {
-                                setPhoneNumber(e.currentTarget.value);
-                            }} />
-                        </Form.Group>
-
-                        <Form.Group className="mb-2" controlId="formBasicEmail">
-                            <Form.Label>Correo electrónico</Form.Label>
-                            <Form.Control required value={email} type="email" placeholder="Ingrese su correo"
-                                onChange={(e) => {
-                                    setEmail(e.currentTarget.value);
+        <>
+            <div align="left">
+                <Card
+                    style={{
+                        width: "25%",
+                        marginTop: "25px",
+                        marginLeft: "40px",
+                        position: "relative",
+                    }}
+                >
+                    <Card.Header style={{ fontSize: 20, marginBottom: 20 }}>
+                        Ingrese sus datos de compra
+                    </Card.Header>
+                    <Card.Body style={{ textAlign: "left" }}>
+                        <Form onSubmit={login}>
+                            <Form.Group className="mb-2" controlId="formBasicText">
+                                <Form.Label>Nombre</Form.Label>
+                                <Form.Control required value={name} type="text" placeholder="Ingrese su nombre" onChange={(e) => {
+                                    setName(e.currentTarget.value);
                                 }} />
-                        </Form.Group>
+                            </Form.Group>
 
-                        <Form.Group className="mb-2" controlId="formBasicNumber">
-                            <Form.Label>Unidades a comprar</Form.Label>
-                            <Form.Control required value={units} type="number" min="1" max="100" placeholder="Ingrese su teléfono" onChange={(e) => {
-                                validateCorrectExtension(e.currentTarget.value);
-                            }} />
-                        </Form.Group>
+                            <Form.Group className="mb-2" controlId="formBasicText">
+                                <Form.Label>Apellidos</Form.Label>
+                                <Form.Control required value={lastName} type="text" placeholder="Ingrese sus apellidos" onChange={(e) => {
+                                    setLastName(e.currentTarget.value);
+                                }} />
+                            </Form.Group>
 
-                        <Form.Text className="text-muted">
-                            Su información no se compartirá con nadie más.
-                        </Form.Text>
-                        <Button variant="primary" type="submit" style={{ marginTop: "8px", width: '100%' }}>
-                            Comprar
-                        </Button>
-                    </Form>
-                </Card.Body>
-            </Card>
-        </div>
+                            <Form.Group className="mb-2" controlId="formBasicText">
+                                <Form.Label>Dirección</Form.Label>
+                                <Form.Control required value={address} type="text" placeholder="Ingrese su dirección" onChange={(e) => {
+                                    setAddress(e.currentTarget.value);
+                                }} />
+                            </Form.Group>
+
+                            <Form.Group className="mb-2" controlId="formBasicNumber">
+                                <Form.Label>Número de teléfono</Form.Label>
+                                <Form.Control required value={phoneNumber} type="number" placeholder="Ingrese su teléfono" onChange={(e) => {
+                                    setPhoneNumber(e.currentTarget.value);
+                                }} />
+                            </Form.Group>
+
+                            <Form.Group className="mb-2" controlId="formBasicEmail">
+                                <Form.Label>Correo electrónico</Form.Label>
+                                <Form.Control required value={email} type="email" placeholder="Ingrese su correo"
+                                    onChange={(e) => {
+                                        setEmail(e.currentTarget.value);
+                                    }} />
+                            </Form.Group>
+
+                            <Form.Group className="mb-2" controlId="formBasicNumber">
+                                <Form.Label>Unidades a comprar</Form.Label>
+                                <Form.Control required value={units} type="number" min="1" max="100" placeholder="Ingrese su teléfono" onChange={(e) => {
+                                    validateCorrectExtension(e.currentTarget.value);
+                                }} />
+                            </Form.Group>
+
+                            <Form.Text className="text-muted">
+                                Su información no se compartirá con nadie más.
+                            </Form.Text>
+                            <Button variant="primary" type="submit" style={{ marginTop: "8px", width: '100%' }}>
+                                Comprar
+                            </Button>
+                        </Form>
+                    </Card.Body>
+                </Card>
+            </div>
+        </>
     );
 }
 

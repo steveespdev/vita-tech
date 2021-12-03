@@ -14,7 +14,7 @@ app.use(cors({
 const db = mysql.createConnection({
     user: 'root',
     host: 'localhost',
-    password: 'adminroot',
+    password: 'Kobe7247',
     database: 'vitadb',
 });
 
@@ -25,7 +25,7 @@ const trackingNumber = (pr = "NE001", su = "CR") => {
 
 //Funcion que retorna todas las ordenes
 app.get('/', (req, res) => {
-    emailSender();
+   // emailSender();
     db.query(`SELECT * FROM vitadb.order;`, (err, result) => {
         if (err) {
             res.send(err);
@@ -80,15 +80,18 @@ app.post('/track-order', (req, res) => {
 
 
 const emailSender = (name, trackID, emailAddress) => {
-
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; //NO BORRAR
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
             user: 'vitatech4@gmail.com',
-            pass: 'ucrvitatech4'
+            pass: 'ucrvitatech4',
+            rejectUnauthorized: false
         }
     });
 
+
+   
     const mailOptions = {
         from: 'vitatech4@gmail.com',
         to: emailAddress,
